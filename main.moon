@@ -1,11 +1,14 @@
 Mat2={} -- Mat2 class reference hack
 PI=math.pi
-fstr=(v,d=3)->string.format("%.#{d}f", v)
+fstr=(v,d=3)->
+ string.format("%.#{d}f", v)
 
-Rot2=(r)->Mat2(math.cos(r),-math.sin(r),
-               math.sin(r),math.cos(r))
-Ref2=(r)->Mat2(math.cos(2*r),math.sin(2*r),
-               math.sin(2*r),-math.cos(2*r))
+Rot2=(r)->
+ Mat2(math.cos(r),-math.sin(r),
+      math.sin(r),math.cos(r))
+Ref2=(r)->
+ Mat2(math.cos(2*r),math.sin(2*r),
+      math.sin(2*r),-math.cos(2*r))
 class Vec2
  new:(@x=0,@y=0) =>
  len:=>(@x^2+@y^2)^0.5
@@ -20,7 +23,8 @@ class Vec2
    Vec2(@x*v.x,@y*v.y)
   else nil
  __div:(v)=>Vec2(@x/v,@y/v)
- __tostring:=>"Vec2(#{fstr(@x)},#{fstr(@y)})"
+ __tostring:=>
+  "Vec2(#{fstr(@x)},#{fstr(@y)})"
  norm:=>(@/@\len())
  rotated:(r,o)=>
   if o==nil
@@ -32,8 +36,10 @@ class Vec2
 class Mat2
  new:(@a=0,@b=0,@c=0,@d=0)=>
  det:=>@a*@d-@b*@c
- __add:(m2)=>Mat2(@a+m2.a,@b+m2.b,@c+m2.c,@d+m2.d)
- __sub:(m2)=>Mat2(@a-m2.a,@b-m2.b,@c-m2.c,@d-m2.d)
+ __add:(m2)=>
+  Mat2(@a+m2.a,@b+m2.b,@c+m2.c,@d+m2.d)
+ __sub:(m2)=>
+  Mat2(@a-m2.a,@b-m2.b,@c-m2.c,@d-m2.d)
  __mul:(v)=>
   if type(v)=="number"
    Mat2(@a*v,@b*v,@c*v,@d*v)
@@ -44,10 +50,15 @@ class Mat2
         @c*v.a+@d*v.c, @c*v.b+@d*v.d)
   else nil
  __div:(v)=>Mat2(@a/v,@b/v,@c/v,@d/v)
- __tostring:=>"Mat2(#{fstr(@a)},#{fstr(@b)},#{fstr(@c)},#{fstr(@d)})"
+ __tostring:=>
+  "Mat2(#{fstr(@a)},#{fstr(@b)},#{fstr(@c)},#{fstr(@d)})"
 
-v1 = Vec2(1,0)
-v2 = Vec2(2,1)
--- rotate v1 around v2 by 45 degrees
-print ((v1-v2)\rotated(PI/4)+v2)
-print v1\rotated(PI/4,v2)
+p1=Vec2(10,0)
+p2=Vec2(2,1)
+t=0
+-- rotate p1 around p2
+export TIC=->
+ cls(0)
+ p3=p1\rotated(t/PI, p2)
+ line(p2.x,p2.y,p3.y,p3.y,4)
+ t=t+1
